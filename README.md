@@ -40,6 +40,7 @@ This way, you can focus on writing great content while the tool handles the tedi
 
 - Automatically generates multiple PDF resumes with different project combinations
 - Supports both combinations and permutations modes
+- Supports customizable subset sizes (1-N projects) for combinations/permutations
 - Uses LaTeX for professional-looking documents
 - Automated builds via GitHub Actions
 - Easy project management through simple LaTeX files
@@ -141,30 +142,32 @@ Resume-Builder/
 
 ### Build Modes
 
-The builder supports two modes:
+The builder supports customizable project ranges:
+- **Combinations**: Generates PDFs for unique project groups (order doesn’t matter)
+- **Permutations**: Generates PDFs for every project order (order matters)
 
-1. **Combinations** (default):
-   - Generates PDFs for each unique combination of 2-3 projects
-   - Order doesn't matter
-   - Example: For projects A, B, C:
-     - 2 projects: AB, AC, BC
-     - 3 projects: ABC
-
-2. **Permutations**:
-   - Generates PDFs for each possible arrangement of 2-3 projects
-   - Order matters
-   - Example: For projects A, B, C:
-     - 2 projects: AB, BA, AC, CA, BC, CB
-     - 3 projects: ABC, ACB, BAC, BCA, CAB, CBA
+#### Examples with `--min-projects=1 --max-projects=3`:
+- **For projects A, B, C**:
+  - **Combinations** (`--mode combinations`):
+    - 1-project: `A.pdf`, `B.pdf`, `C.pdf`
+    - 2-project: `AB.pdf`, `AC.pdf`, `BC.pdf`
+    - 3-project: `ABC.pdf`
+  
+  - **Permutations** (`--mode permutations`):
+    - 1-project: `A.pdf`, `B.pdf`, `C.pdf`
+    - 2-project: `AB.pdf`, `BA.pdf`, `AC.pdf`, `CA.pdf`, `BC.pdf`, `CB.pdf`
+    - 3-project: `ABC.pdf`, `ACB.pdf`, `BAC.pdf`, `BCA.pdf`, `CAB.pdf`, `CBA.pdf`
 
 ### GitHub Actions Configuration
 
 The build mode and PDF name can be configured in `.github/workflows/build.yml`:
 
 ```yaml
-pre_compile: |
-  MODE="permutations"      # "combinations" or "permutations"
-  PDF_NAME="YourName.pdf"  # Name of generated PDFs
+ pre_compile: |
+   MODE="permutations"      # "combinations" or "permutations"
+   PDF_NAME="AliBakly.pdf"  # rename as needed
+   MIN_PROJECTS=1           # minimum number of projects in a resume
+   MAX_PROJECTS=3           # maximum number of projects in a resume
 ```
 
 ### Local Building
@@ -172,7 +175,7 @@ pre_compile: |
 To build locally:
 
 ```bash
-python build.py --mode combinations --pdf_name YourName.pdf
+python build.py --mode combinations --pdf_name YourName.pdf --min-projects 1 --max-projects 4
 ```
 
 ## 💡 Tips
