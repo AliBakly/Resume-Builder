@@ -38,9 +38,12 @@ jobs:
 
             MODE="permutations"      # "combinations" or "permutations"
             PDF_NAME="AliBakly.pdf"  # rename as needed
+            MIN_PROJECTS=1           # minimum number of projects in a resume
+            MAX_PROJECTS=3           # maximum number of projects in a resume
 
-            echo "Running build with mode=$MODE, pdf_name=$PDF_NAME"
-            python build.py --mode "$MODE" --pdf_name "$PDF_NAME"
+
+            echo "Running build with mode=$MODE, pdf_name=$PDF_NAME, min_projects=$MIN_PROJECTS, max_projects=$MAX_PROJECTS"
+            python build.py --mode "$MODE" --pdf_name "$PDF_NAME" --min_projects "$MIN_PROJECTS" --max_projects "$MAX_PROJECTS"
 
       - name: Commit and push changes
         run: |
